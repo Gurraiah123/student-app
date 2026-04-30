@@ -43,19 +43,19 @@ pipeline {
         }
 
         stage('Deploy to ECS') {
-            steps {
-                withCredentials([[
-                    $class: 'AmazonWebServicesCredentialsBinding',
-                    credentialsId: 'aws-creds'
-                ]]) {
-                    sh '''
-                    aws ecs update-service \
-                    --cluster student-cluster \
-                    --service student-service \
-                    --force-new-deployment
-                    '''
-                }
-            }
+    steps {
+        withCredentials([[
+            $class: 'AmazonWebServicesCredentialsBinding',
+            credentialsId: 'aws-creds'
+        ]]) {
+            sh '''
+            aws ecs update-service \
+            --region ap-south-1 \
+            --cluster student-cluster \
+            --service student-service \
+            --force-new-deployment
+            '''
         }
     }
+}
 }
