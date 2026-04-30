@@ -5,8 +5,8 @@ pipeline {
         AWS_REGION = "ap-south-1"
         ECR_REPO = "student-app"
         IMAGE_TAG = "latest"
-        AWS_ACCOUNT_ID = credentials('aws-account-id')  // Store as Jenkins secret
-        ECR_REGISTRY = "${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com"
+        AWS_ACCOUNT_ID = credentials('413027378314')  // Store as Jenkins secret
+        ECR_REGISTRY = "${413027378314}.dkr.ecr.${AWS_REGION}.amazonaws.com"
     }
 
     stages {
