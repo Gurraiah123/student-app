@@ -10,6 +10,12 @@ pipeline {
 
     stages {
 
+        stage('Checkout') {
+            steps {
+                git branch: 'main', url: 'https://github.com/Gurraiah123/student-app.git'
+            }
+        }
+
         stage('Build Docker Image') {
             steps {
                 sh 'docker build -t student-app .'
@@ -43,19 +49,20 @@ pipeline {
         }
 
         stage('Deploy to ECS') {
-    steps {
-        withCredentials([[
-            $class: 'AmazonWebServicesCredentialsBinding',
-            credentialsId: 'aws-creds'
-        ]]) {
-            sh '''
-            aws ecs update-service \
-            --region ap-south-1 \
-            --cluster student-cluster \
-            --service student-service \
-            --force-new-deployment
-            '''
+            steps {
+                withCredentials([[
+                    $class: 'AmazonWebServicesCredentialsBinding',
+                    credentialsId: 'aws-creds'
+                ]]) {
+                    sh '''
+                    aws ecs update-service \
+                    --region $AWS_REGION \
+                    --cluster student-cluster \
+                    --service student-service \
+                    --force-new-deployment
+                    '''
+                }
+            }
         }
     }
-}
 }
