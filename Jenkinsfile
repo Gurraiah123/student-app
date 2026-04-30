@@ -25,7 +25,7 @@ pipeline {
             steps {
                 sh '''
                 aws ecr get-login-password --region $AWS_REGION | \
-                docker login --username AWS --password-stdin <AWS_ACCOUNT_ID>.dkr.ecr.$AWS_REGION.amazonaws.com
+                docker login --username AWS --password-stdin <413027378314>.dkr.ecr.$AWS_REGION.amazonaws.com
                 '''
             }
         }
@@ -33,8 +33,8 @@ pipeline {
         stage('Tag & Push') {
             steps {
                 sh '''
-                docker tag student-app:latest <AWS_ACCOUNT_ID>.dkr.ecr.$AWS_REGION.amazonaws.com/student-app:latest
-                docker push <AWS_ACCOUNT_ID>.dkr.ecr.$AWS_REGION.amazonaws.com/student-app:latest
+                docker tag student-app:latest <413027378314>.dkr.ecr.$AWS_REGION.amazonaws.com/student-app:latest
+                docker push <413027378314>.dkr.ecr.$AWS_REGION.amazonaws.com/student-app:latest
                 '''
             }
         }
