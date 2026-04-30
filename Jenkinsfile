@@ -11,7 +11,7 @@ pipeline {
 
         stage('Checkout') {
             steps {
-                git branch: 'main', url: 'https://github.com/your-repo/student-app.git'
+              git branch: 'main', url: 'https://github.com/Gurraiah123/student-app.git', credentialsId: 'Github'
             }
         }
 
