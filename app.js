@@ -5,4 +5,4 @@ app.get("/", (req, res) => {
   res.send("Student App Running on ECS 🚀");
 });
 
-app.listen(8080, () => console.log("Running on 8080"));
+app.listen(3000, () => console.log("Running on 3000"));
