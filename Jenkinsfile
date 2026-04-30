@@ -17,7 +17,7 @@ pipeline {
 
         stage('Build Docker Image') {
             steps {
-                sh 'docker build -t student-app .'
+                sh 'docker build --progress=plain -t student-app .'
             }
         }
 
