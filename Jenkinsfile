@@ -5,6 +5,8 @@ pipeline {
         AWS_REGION = "ap-south-1"
         ECR_REPO = "student-app"
         IMAGE_TAG = "latest"
+        AWS_ACCOUNT_ID = credentials('aws-account-id')  // Store as Jenkins secret
+        ECR_REGISTRY = "${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com"
     }
 
     stages {
@@ -17,25 +19,22 @@ pipeline {
 
         stage('Build Docker Image') {
             steps {
-                sh 'docker build -t student-app .'
+                sh "docker build -t ${ECR_REGISTRY}/${ECR_REPO}:${IMAGE_TAG} ."
             }
         }
 
         stage('Login to ECR') {
             steps {
                 sh '''
-                aws ecr get-login-password --region $AWS_REGION | \
-                docker login --username AWS --password-stdin <413027378314>.dkr.ecr.$AWS_REGION.amazonaws.com
+                aws ecr get-login-password --region ${AWS_REGION} | \
+                docker login --username AWS --password-stdin ${ECR_REGISTRY}
                 '''
             }
         }
 
         stage('Tag & Push') {
             steps {
-                sh '''
-                docker tag student-app:latest <413027378314>.dkr.ecr.$AWS_REGION.amazonaws.com/student-app:latest
-                docker push <413027378314>.dkr.ecr.$AWS_REGION.amazonaws.com/student-app:latest
-                '''
+                sh "docker push ${ECR_REGISTRY}/${ECR_REPO}:${IMAGE_TAG}"
             }
         }
 
@@ -45,7 +44,8 @@ pipeline {
                 aws ecs update-service \
                 --cluster student-cluster \
                 --service student-service \
-                --force-new-deployment
+                --force-new-deployment \
+                --region ${AWS_REGION}
                 '''
             }
         }
